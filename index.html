@@ -19,10 +19,7 @@ align-items:center;
 font-family:Poppins;
 overflow:hidden;
 background:
-radial-gradient(circle at center,
-#2b0035 0%,
-#14001a 50%,
-#000 100%);
+radial-gradient(circle at center,#2b0035 0%,#14001a 50%,#000 100%);
 animation:bgZoom 18s ease-in-out infinite alternate;
 }
 
@@ -71,7 +68,6 @@ z-index:2;
 
 h2{color:white;}
 h3{color:#ffb6c1;margin-top:-10px;}
-
 .msg{color:white;margin:20px 0;}
 
 .btn-box{
@@ -115,7 +111,7 @@ pointer-events:none;
 to{transform:translateY(-40px);opacity:0;}
 }
 
-/* Popup romantic text */
+/* Romantic popup text */
 .popup{
 position:fixed;
 top:50%;
@@ -210,19 +206,25 @@ noBtn.style.top=Math.random()*90+"vh";
 };
 
 
-/* YES click */
+/* YES click FINAL */
 document.getElementById("yes").onclick=()=>{
 
-/* Hide previous container */
+/* Hide main box */
 document.querySelector(".container").style.display="none";
 
-/* Romantic text */
+/* Disable NO button */
+noBtn.onclick=null;
+
+/* Stop roses click */
+document.onclick=null;
+
+/* Final romantic message */
 const popup=document.createElement("div");
 popup.className="popup";
 popup.innerHTML="💖 You Made My Heart Smile 💖<br>Happy Valentine’s Day ❤️";
 document.body.appendChild(popup);
 
-/* Soft glow */
+/* Romantic glow */
 document.body.style.boxShadow="inset 0 0 150px hotpink";
 };
 
@@ -245,5 +247,3 @@ setTimeout(()=>rose.remove(),2000);
 </script>
 </body>
 </html>
-
-
