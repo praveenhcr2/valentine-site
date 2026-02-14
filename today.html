@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* Dark violet romantic background */
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Poppins;
+background:radial-gradient(circle at center,#2b0035,#14001a,#000);
+overflow:hidden;
+transition:1s;
+}
+
+/* Floating baby pink hearts */
+.heart{
+position:absolute;
+color:#ffb6c1;
+font-size:24px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);opacity:0;}
+}
+
+/* Glowing Valentine box */
+.container{
+text-align:center;
+padding:40px;
+border-radius:25px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(15px);
+box-shadow:
+0 0 25px rgba(255,105,180,0.5),
+0 0 50px rgba(255,105,180,0.25);
+}
+
+h2{color:white;}
+
+.msg{
+color:white;
+min-height:30px;
+margin:20px 0;
+font-size:18px;
+}
+
+/* Buttons */
+button{
+padding:14px 30px;
+border:none;
+border-radius:30px;
+font-size:16px;
+cursor:pointer;
+margin:10px;
+}
+
+/* YES pink glow */
+#yes{
+background:#ff4d88;
+color:white;
+box-shadow:0 0 20px #ff4d88,0 0 40px #ff4d88;
+}
+
+/* NO white glow */
+#no{
+position:absolute;
+background:transparent;
+color:white;
+border:2px solid white;
+box-shadow:0 0 12px white inset,0 0 18px white;
+}
+
+/* Crimson roses */
+.rose{
+position:absolute;
+font-size:22px;
+color:crimson;
+animation:fade 2s forwards;
+}
+
+@keyframes fade{
+to{transform:translateY(-40px);opacity:0;}
+}
+
+/* Romantic popup */
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.9);
+color:white;
+padding:30px;
+border-radius:20px;
+font-size:22px;
+text-align:center;
+box-shadow:0 0 40px hotpink;
+z-index:1000;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Happy Valentine’s Day ❤️</h2>
+<div class="msg" id="message"></div>
+<button id="yes">Yes 💖</button>
+</div>
+
+<button id="no">No 💔</button>
+
+<script>
+
+/* Floating hearts */
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤";
+heart.style.left=Math.random()*100+"vw";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+},400);
+
+
+/* NO button messages */
+const messages=[
+"Are you sure? 🥺",
+"Really sure? 😢",
+"Think again ❤️",
+"No button is broken 😜",
+"System error… try YES 😏",
+"Nice try 😎",
+"That option is not allowed 😂",
+"Are you testing me? 😆",
+"Oops, missed the YES button 😁",
+"Try again… carefully 😌",
+"This is getting suspicious 🤨",
+"You cannot escape love 😄",
+"Caught you again 😜"
+];
+
+const msg=document.getElementById("message");
+const noBtn=document.getElementById("no");
+let count=0;
+
+noBtn.onclick=()=>{
+msg.textContent=messages[count%messages.length];
+count++;
+
+noBtn.style.left=Math.random()*90+"vw";
+noBtn.style.top=Math.random()*90+"vh";
+};
+
+
+/* SPECIAL YES ANIMATION */
+document.getElementById("yes").onclick=()=>{
+msg.textContent="Yayyyy!! ❤️🥰";
+
+/* Romantic popup */
+const popup=document.createElement("div");
+popup.className="popup";
+popup.innerHTML="💖 You just made my day! 💖<br>Happy Valentine’s Day ❤️";
+document.body.appendChild(popup);
+
+/* Screen glow effect */
+document.body.style.boxShadow="inset 0 0 200px hotpink";
+};
+
+
+/* Crimson roses on click */
+document.addEventListener("click",(e)=>{
+const num=Math.floor(Math.random()*2)+2;
+
+for(let i=0;i<num;i++){
+const rose=document.createElement("div");
+rose.className="rose";
+rose.innerHTML="🌹";
+rose.style.left=e.pageX+(Math.random()*20-10)+"px";
+rose.style.top=e.pageY+(Math.random()*20-10)+"px";
+document.body.appendChild(rose);
+setTimeout(()=>rose.remove(),2000);
+}
+});
+
+</script>
+
+</body>
+</html>
