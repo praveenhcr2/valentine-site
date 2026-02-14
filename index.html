@@ -9,7 +9,7 @@
 
 <style>
 
-/* Dark violet romantic background */
+/* Cinematic Dark Romantic Background */
 body{
 margin:0;
 height:100vh;
@@ -17,97 +17,131 @@ display:flex;
 justify-content:center;
 align-items:center;
 font-family:Poppins;
-background:radial-gradient(circle at center,#2b0035,#14001a,#000);
 overflow:hidden;
-transition:1s;
+background:
+radial-gradient(circle at center,
+#2b0035 0%,
+#14001a 50%,
+#000 100%);
+animation:bgZoom 18s ease-in-out infinite alternate;
 }
 
-/* Floating baby pink hearts */
+@keyframes bgZoom{
+from{background-size:100% 100%;}
+to{background-size:120% 120%;}
+}
+
+/* Vignette */
+body::after{
+content:"";
+position:fixed;
+inset:0;
+background:radial-gradient(circle,transparent 60%,black 100%);
+pointer-events:none;
+}
+
+/* Floating hearts */
 .heart{
 position:absolute;
 color:#ffb6c1;
-font-size:24px;
-animation:float 6s linear infinite;
+font-size:50px;
+animation:float 7s linear infinite;
+opacity:.85;
 }
 
 @keyframes float{
-from{transform:translateY(100vh);}
-to{transform:translateY(-10vh);opacity:0;}
+0%{transform:translateY(100vh) translateX(0);}
+25%{transform:translateY(70vh) translateX(-20px);}
+50%{transform:translateY(40vh) translateX(20px);}
+75%{transform:translateY(10vh) translateX(-15px);}
+100%{transform:translateY(-10vh);opacity:0;}
 }
 
-/* Glowing Valentine box */
+/* Valentine box */
 .container{
 text-align:center;
 padding:40px;
 border-radius:25px;
 background:rgba(255,255,255,0.06);
-backdrop-filter:blur(15px);
-box-shadow:
-0 0 25px rgba(255,105,180,0.5),
-0 0 50px rgba(255,105,180,0.25);
+backdrop-filter:blur(12px);
+box-shadow:0 0 40px rgba(255,105,180,.35);
+width:320px;
+z-index:2;
 }
 
 h2{color:white;}
+h3{color:#ffb6c1;margin-top:-10px;}
 
-.msg{
-color:white;
-min-height:30px;
-margin:20px 0;
-font-size:18px;
+.msg{color:white;margin:20px 0;}
+
+.btn-box{
+display:flex;
+justify-content:space-between;
 }
 
-/* Buttons */
 button{
 padding:14px 30px;
 border:none;
 border-radius:30px;
 font-size:16px;
 cursor:pointer;
-margin:10px;
 }
 
-/* YES pink glow */
 #yes{
 background:#ff4d88;
 color:white;
-box-shadow:0 0 20px #ff4d88,0 0 40px #ff4d88;
+box-shadow:0 0 18px #ff4d88;
 }
 
-/* NO white glow */
 #no{
-position:absolute;
 background:transparent;
 color:white;
 border:2px solid white;
-box-shadow:0 0 12px white inset,0 0 18px white;
+box-shadow:0 0 10px white inset;
+position:relative;
+z-index:9999;
 }
 
-/* Crimson roses */
+/* Roses */
 .rose{
 position:absolute;
 font-size:22px;
 color:crimson;
 animation:fade 2s forwards;
+pointer-events:none;
 }
 
 @keyframes fade{
 to{transform:translateY(-40px);opacity:0;}
 }
 
-/* Romantic popup */
+/* Popup romantic text */
 .popup{
 position:fixed;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-background:rgba(0,0,0,0.9);
-color:white;
-padding:30px;
-border-radius:20px;
-font-size:22px;
+color:#ffb6c1;
+font-size:34px;
+font-weight:600;
 text-align:center;
-box-shadow:0 0 40px hotpink;
 z-index:1000;
+text-shadow:
+0 0 10px hotpink,
+0 0 25px hotpink,
+0 0 45px deeppink;
+animation:fadeIn 1s ease forwards,
+floatText 3s ease-in-out infinite alternate;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translate(-50%,-40%);}
+to{opacity:1; transform:translate(-50%,-50%);}
+}
+
+@keyframes floatText{
+from{transform:translate(-50%,-50%);}
+to{transform:translate(-50%,-55%);}
 }
 
 </style>
@@ -117,11 +151,15 @@ z-index:1000;
 
 <div class="container">
 <h2>Happy Valentine’s Day ❤️</h2>
-<div class="msg" id="message"></div>
-<button id="yes">Yes 💖</button>
-</div>
+<h3>Will you be my Valentine? 💖🥺</h3>
 
+<div class="msg" id="message"></div>
+
+<div class="btn-box">
+<button id="yes">Yes 💖</button>
 <button id="no">No 💔</button>
+</div>
+</div>
 
 <script>
 
@@ -132,8 +170,8 @@ heart.className="heart";
 heart.innerHTML="❤";
 heart.style.left=Math.random()*100+"vw";
 document.body.appendChild(heart);
-setTimeout(()=>heart.remove(),6000);
-},400);
+setTimeout(()=>heart.remove(),7000);
+},280);
 
 
 /* NO button messages */
@@ -155,33 +193,41 @@ const messages=[
 
 const msg=document.getElementById("message");
 const noBtn=document.getElementById("no");
-let count=0;
+
+let firstClick=true,count=0;
 
 noBtn.onclick=()=>{
-msg.textContent=messages[count%messages.length];
-count++;
+msg.textContent=messages[count++%messages.length];
+
+if(firstClick){
+document.body.appendChild(noBtn);
+noBtn.style.position="absolute";
+firstClick=false;
+}
 
 noBtn.style.left=Math.random()*90+"vw";
 noBtn.style.top=Math.random()*90+"vh";
 };
 
 
-/* SPECIAL YES ANIMATION */
+/* YES click */
 document.getElementById("yes").onclick=()=>{
-msg.textContent="Yayyyy!! ❤️🥰";
 
-/* Romantic popup */
+/* Hide previous container */
+document.querySelector(".container").style.display="none";
+
+/* Romantic text */
 const popup=document.createElement("div");
 popup.className="popup";
-popup.innerHTML="💖 You just made my day! 💖<br>Happy Valentine’s Day ❤️";
+popup.innerHTML="💖 You Made My Heart Smile 💖<br>Happy Valentine’s Day ❤️";
 document.body.appendChild(popup);
 
-/* Screen glow effect */
-document.body.style.boxShadow="inset 0 0 200px hotpink";
+/* Soft glow */
+document.body.style.boxShadow="inset 0 0 150px hotpink";
 };
 
 
-/* Crimson roses on click */
+/* Roses click effect */
 document.addEventListener("click",(e)=>{
 const num=Math.floor(Math.random()*2)+2;
 
@@ -197,7 +243,7 @@ setTimeout(()=>rose.remove(),2000);
 });
 
 </script>
-
 </body>
 </html>
+
 
